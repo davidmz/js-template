@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JST test</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="jst.js"></script>
+    <script>
+        $(function() {
+            var data = {
+                "author":   {
+                    "name": "Жюль Верн",
+                    "fr":   "Jules Verne"
+                },
+                "books":    [
+                    {
+                        "title": "20 000 лье под водой",
+                        "price": 0.5,
+                        "keywords": ["лодка", "подводная", "наутилус"]
+                    },
+                    {
+                        "title": "Из пушки на Луну",
+                        "price": 1.5,
+                        "keywords": ["пушка", "луна", "космос"]
+                    }
+                ]
+            };
+
+            /**
+             * Custom method example
+             * @param value
+             */
+            jst.methods["custom"] = function(value) {
+                this.innerHTML = (value > 1) ? "BIG" : "small";
+            };
+
+            /**
+             * noConflict example
+             */
+            var jj = jst.noConflict();
+
+            var tpl = document.getElementById("tpl").cloneNode(true);
+            tpl.removeAttribute("id");
+            document.getElementById("place").appendChild(jj(tpl, data));
+        });
+    </script>
+    <style>
+        #templates { display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="place"></div>
+
+    <div id="templates">
+        <div id="tpl">
+            <p>
+                Книги автора по имени <strong data-jst-text="author.name" data-jst-attr="title:author.fr"></strong>:
+            </p>
+            <ul>
+                <li data-jst-foreach="books">
+                    <span data-jst-text="title"></span>
+                    ($<span data-jst-text="price"></span>, <span data-jst-custom="price"></span>):
+
+                    <span data-jst-foreach="keywords">
+                    <span data-jst-text="#counter">bar</span>)
+                    <a href="#"
+                            data-jst-text=""
+                            data-jst-attr="href:"
+                            >foo</a></span><span data-jst-divider>, </span>.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+</html>
